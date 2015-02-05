@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,7 +30,7 @@ public class PlayerEvents implements Listener {
 			this.lockeds.add(event.getPlayer().getUniqueId());
 		}
 	}
-	
+
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if (this.lockeds.contains(event.getEntity().getUniqueId())) {
@@ -58,6 +59,9 @@ public class PlayerEvents implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
+		if(!event.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) {
+			event.getPlayer().setGameMode(GameMode.SURVIVAL);
+		}
 		if (!this.lockeds.contains(event.getPlayer().getUniqueId())) {
 			this.manager.runSaveTask(event.getPlayer());
 		}
