@@ -44,7 +44,11 @@ public class CheckLoadedTask implements Runnable {
 	private void sync(Player player, JsonArray value) {
 		// TODO maybe need caching configure
 		if (this.plugin.getConfig().getBoolean("sync.health")) {
-			player.setHealth(value.get(0).getAsDouble());
+			try {
+				player.setHealth(value.get(0).getAsDouble());
+			}catch (Exception e){
+				player.setHealth(20);
+			}
 		}
 		if (this.plugin.getConfig().getBoolean("sync.food")) {
 			player.setFoodLevel(value.get(1).getAsInt());
